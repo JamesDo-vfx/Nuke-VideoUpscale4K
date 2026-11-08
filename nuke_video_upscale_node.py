@@ -129,7 +129,7 @@ def start(node, single_frame=False):
         nuke.message("A video upscale is already running.")
         return
     if not PYTHON.is_file():
-        nuke.message("The bundled runtime is missing. Install the complete VideoUpscale4k package.")
+        nuke.message("The runtime is missing. Run Install.bat from the extracted VideoUpscale4k package.")
         return
 
     input_node = node.input(0) if node.maxInputs() else None

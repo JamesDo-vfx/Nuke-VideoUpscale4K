@@ -1,0 +1,4 @@
+/runtime/
+/bin/*.exe
+/models/upscale/*.pth
+__pycache__/

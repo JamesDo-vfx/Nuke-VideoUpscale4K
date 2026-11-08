@@ -1,5 +1,6 @@
-"""Install the complete plugin into the current user's Nuke plug-in folder."""
+"""Install the plugin and prepared dependencies into the user's Nuke folder."""
 
+import argparse
 import os
 import re
 import shutil
@@ -7,7 +8,7 @@ import tempfile
 from pathlib import Path
 
 
-FILES = ("Install.bat", "install.py", "menu.py", "nuke_video_upscale_node.py", "worker.py", "README.md")
+FILES = ("Install.bat", "bootstrap.ps1", "install.py", "menu.py", "nuke_video_upscale_node.py", "worker.py", "README.md")
 PLUGIN_FOLDER = "VideoUpscale4k"
 DIRECTORIES = ("app", "bin", "models", "runtime")
 REQUIRED = FILES + (
@@ -46,15 +47,24 @@ def register(startup):
         path.unlink(missing_ok=True)
 
 
-def install(source, nuke_folder):
+def install(source, nuke_folder, prepared=None):
+    directories = {name: source / name for name in DIRECTORIES}
+    if prepared is not None:
+        for name in ("bin", "models", "runtime"):
+            if (prepared / name).is_dir():
+                directories[name] = prepared / name
     for filename in REQUIRED:
-        if not (source / filename).is_file():
+        folder, separator, relative = filename.partition("/")
+        path = directories[folder] / relative if separator else source / filename
+        if not path.is_file():
             raise RuntimeError(f"Package is incomplete: {filename}")
 
     nuke_folder.mkdir(parents=True, exist_ok=True)
     destination = nuke_folder / PLUGIN_FOLDER
     startup = nuke_folder / "init.py"
     if source == destination.resolve():
+        if any(path != source / name for name, path in directories.items()):
+            raise RuntimeError("Run Install.bat from an extracted source package to repair an installed copy.")
         register(startup)
         return destination
 
@@ -66,8 +76,8 @@ def install(source, nuke_folder):
         staged.mkdir()
         for name in FILES:
             shutil.copy2(source / name, staged / name)
-        for name in DIRECTORIES:
-            shutil.copytree(source / name, staged / name, ignore=shutil.ignore_patterns("__pycache__"))
+        for name, directory in directories.items():
+            shutil.copytree(directory, staged / name, ignore=shutil.ignore_patterns("__pycache__"))
 
         previous = Path(temp) / "previous"
         if destination.exists():
@@ -85,8 +95,11 @@ def install(source, nuke_folder):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--prepared", type=Path)
+    args = parser.parse_args()
     try:
-        destination = install(Path(__file__).resolve().parent, Path.home() / ".nuke")
+        destination = install(Path(__file__).resolve().parent, Path.home() / ".nuke", args.prepared)
     except (OSError, RuntimeError) as exc:
         raise SystemExit(f"Installation failed: {exc}") from None
     print(f"Installed to: {destination}")

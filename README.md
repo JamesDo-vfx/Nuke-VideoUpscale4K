@@ -26,15 +26,15 @@ Four comparisons from the demo video. The source is on the left and the upscaled
 - **Real-ESRGAN** requires an NVIDIA GPU and a driver that supports the bundled CUDA 12.8 runtime.
 - **Lanczos** runs on the CPU.
 
-The complete Windows package bundles Python, PyTorch, FFmpeg, FFprobe, and the Real-ESRGAN model. Processing runs locally and works offline.
+The first installation from GitHub needs internet access and about 12 GB of free disk space for downloads and temporary installation files. Processing runs locally and works offline after setup.
 
 ## Installation
 
-1. Extract the complete package and double-click [`Install.bat`](Install.bat).
+1. Download and extract the repository ZIP, then double-click [`Install.bat`](Install.bat).
 2. Restart Nuke.
 3. In the Node Graph, press **Tab** and search for **Video Upscale 4K**. The node is also available under **Image → Video Upscale 4K**.
 
-The installer copies the plug-in to `%USERPROFILE%\.nuke\VideoUpscale4k` and adds a relative entry to the user's `.nuke\init.py`.
+The installer uses local dependencies when present and downloads missing dependencies from Python.org, PyPA, PyPI, PyTorch, Gyan, and the Real-ESRGAN release on GitHub. It installs the plug-in and dependencies into `%USERPROFILE%\.nuke\VideoUpscale4k` and adds a relative entry to the user's `.nuke\init.py`.
 
 ```python
 import nuke
@@ -86,7 +86,6 @@ After changing an upstream node, click **Cache Video Sequence** again to update 
 ## Third-party components
 
 - The AI model comes from [xinntao/Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN).
-- The package includes a Gyan Essentials build of FFmpeg with libx264. See the [bundled FFmpeg license](bin/FFmpeg-LICENSE.txt).
-- See the [bundled Python license](runtime/LICENSE.txt) for the Python runtime.
+- The installer uses a [Gyan Essentials build of FFmpeg](https://github.com/GyanD/codexffmpeg/releases/tag/7.1.1) with libx264. Its license is installed as `bin/FFmpeg-LICENSE.txt`.
+- The [Python runtime license](https://docs.python.org/3.12/license.html) is installed as `runtime/LICENSE.txt`.
 
-The bundled binaries are intended for internal distribution. Review the applicable third-party notices and source distribution requirements before publishing a package that includes them.
