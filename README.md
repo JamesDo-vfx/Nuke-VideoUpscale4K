@@ -6,11 +6,23 @@ VideoUpscale4k is a Windows plug-in for Foundry Nuke that upscales footage or a 
 
 ## Video demo
 
-[Watch the VideoUpscale4k demo (MP4)](DemoVideo.mp4)
+https://github.com/user-attachments/assets/0969d5b2-d883-4044-86cd-1e18e3cf53cb
+
+### Before and after upscaling
+
+Four comparisons from the demo video. The source is on the left and the upscaled result is on the right.
+
+![Ben Thanh Market before and after upscaling](DemoImages/01-ben-thanh-market.png)
+
+![Rice fields before and after upscaling](DemoImages/02-rice-fields.png)
+
+![Landmark 81 before and after upscaling](DemoImages/03-landmark-81.png)
+
+![River valley before and after upscaling](DemoImages/04-river-valley.png)
 
 ## Requirements
 
-- **Windows 64-bit** with Foundry Nuke. Tested on Nuke and NukeX 17.0v1.
+- **Windows 64-bit** with Foundry Nuke. Tested on Nuke and Nuke 17
 - **Real-ESRGAN** requires an NVIDIA GPU and a driver that supports the bundled CUDA 12.8 runtime.
 - **Lanczos** runs on the CPU.
 
@@ -50,11 +62,11 @@ With a graph input connected, the **Source video** and **Output MP4** fields are
 
 **Video Upscale 4K in the Node Graph**
 
-![Video Upscale 4K node in the Nuke Node Graph](Node.png)
+![Video Upscale 4K node in the Nuke Node Graph](DemoImages/Node.png)
 
 **Video Upscale 4K Properties panel**
 
-![Video Upscale 4K settings in the Nuke Properties panel](Properties.png)
+![Video Upscale 4K settings in the Nuke Properties panel](DemoImages/Properties.png)
 
 ## Output and color
 
